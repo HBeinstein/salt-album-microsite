@@ -3,8 +3,8 @@ export function ImageContainer(props) {
     <img
       src={props.src}
       className={props.className}
-      width={`${props.width}%`}
-      height="auto"
+      height={`${props.width}%`}
+      width="auto"
       alt={props.alt}
       loading={props.loading}
     ></img>

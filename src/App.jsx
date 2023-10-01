@@ -14,7 +14,7 @@ function App() {
         <ImageContainer
           src={rectangle}
           className={"gallery__image gallery__image--3x4"}
-          width={100}
+          height={100}
           alt={"square image"}
           loading={"eager"}
         />
@@ -22,23 +22,7 @@ function App() {
         <ImageContainer
           src={rectangle2}
           className={"gallery__image gallery__image--3x2"}
-          width={100}
-          alt={"square image"}
-          loading={"eager"}
-        />
-
-        {/* <ImageContainer
-          src={square}
-          className={"gallery__image gallery__image--1x1"}
-          width={300}
-          alt={"square image"}
-          loading={"eager"}
-        />
-
-        <ImageContainer
-          src={rectangle2}
-          className={"gallery__image gallery__image--3x2"}
-          width={300}
+          height={100}
           alt={"square image"}
           loading={"eager"}
         />
@@ -46,10 +30,50 @@ function App() {
         <ImageContainer
           src={rectangle}
           className={"gallery__image gallery__image--3x4"}
-          width={300}
+          height={300}
           alt={"square image"}
           loading={"eager"}
-        /> */}
+        />
+
+        <ImageContainer
+          src={rectangle2}
+          className={"gallery__image gallery__image--3x2"}
+          height={300}
+          alt={"square image"}
+          loading={"eager"}
+        />
+
+        <ImageContainer
+          src={square}
+          className={"gallery__image gallery__image--1x1"}
+          height={300}
+          alt={"square image"}
+          loading={"eager"}
+        />
+
+        <ImageContainer
+          src={rectangle2}
+          className={"gallery__image gallery__image--3x2"}
+          height={300}
+          alt={"square image"}
+          loading={"eager"}
+        />
+
+        <ImageContainer
+          src={rectangle}
+          className={"gallery__image gallery__image--3x4"}
+          height={300}
+          alt={"square image"}
+          loading={"eager"}
+        />
+
+        <ImageContainer
+          src={rectangle}
+          className={"gallery__image gallery__image--3x4"}
+          height={300}
+          alt={"square image"}
+          loading={"eager"}
+        />
       </Gallery>
     </>
   );

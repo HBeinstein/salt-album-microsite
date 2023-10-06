@@ -25,7 +25,7 @@ function App() {
 
   const [songMap, updateSongMap] = useState(initialSongMap);
 
-  const handleClick = (overrides, upcomingSong) => {
+  const handleClick = (songName, upcomingSong) => {
     const prevSong = document.getElementById(`${songMap.currentSong}`);
     if (prevSong && prevSong.id !== upcomingSong.id) {
       prevSong.pause();
@@ -33,8 +33,26 @@ function App() {
 
     if (!upcomingSong.currentTime || upcomingSong.paused) {
       upcomingSong.play();
-      updateSongMap({ ...songMap, ...overrides });
+      updateSongMap({
+        ...songMap,
+        ...{ currentSong: songName },
+        ...{
+          songs: songMap.songs.map((s) =>
+            s.name === songName
+              ? { ...s, name: songName, isActive: true }
+              : { ...s, name: s.name, isActive: false },
+          ),
+        },
+      });
     } else {
+      updateSongMap({
+        ...songMap,
+        ...{
+          songs: songMap.songs.map((s) =>
+            s.isActive === true ? { ...s, name: s.name, isActive: false } : s,
+          ),
+        },
+      });
       upcomingSong.pause();
     }
   };
@@ -51,6 +69,7 @@ function App() {
           dataSongName={songMap.songs[0].name}
           dataSongAudio={sample}
           handleClick={handleClick}
+          isActive={songMap.songs[0].isActive}
         />
 
         <ImageContainer
@@ -62,6 +81,7 @@ function App() {
           dataSongName={songMap.songs[1].name}
           dataSongAudio={sample}
           handleClick={handleClick}
+          isActive={songMap.songs[1].isActive}
         />
 
         <ImageContainer
@@ -73,6 +93,7 @@ function App() {
           dataSongName={songMap.songs[2].name}
           dataSongAudio={sample}
           handleClick={handleClick}
+          isActive={songMap.songs[2].isActive}
         />
 
         <ImageContainer
@@ -84,6 +105,7 @@ function App() {
           dataSongName={songMap.songs[3].name}
           dataSongAudio={sample}
           handleClick={handleClick}
+          isActive={songMap.songs[3].isActive}
         />
 
         <ImageContainer
@@ -95,6 +117,7 @@ function App() {
           dataSongName={songMap.songs[4].name}
           dataSongAudio={sample}
           handleClick={handleClick}
+          isActive={songMap.songs[4].isActive}
         />
 
         <ImageContainer
@@ -106,6 +129,7 @@ function App() {
           dataSongName={songMap.songs[5].name}
           dataSongAudio={sample}
           handleClick={handleClick}
+          isActive={songMap.songs[5].isActive}
         />
 
         <ImageContainer
@@ -117,6 +141,7 @@ function App() {
           dataSongName={songMap.songs[6].name}
           dataSongAudio={sample}
           handleClick={handleClick}
+          isActive={songMap.songs[6].isActive}
         />
 
         <ImageContainer
@@ -128,6 +153,7 @@ function App() {
           dataSongName={songMap.songs[7].name}
           dataSongAudio={sample}
           handleClick={handleClick}
+          isActive={songMap.songs[7].isActive}
         />
       </Gallery>
     </>

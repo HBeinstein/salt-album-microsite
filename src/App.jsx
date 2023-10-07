@@ -1,14 +1,40 @@
 import { gsap } from "gsap";
-import { useState } from "react";
+import { useState, useLayoutEffect, useRef } from "react";
 import viteLogo from "/vite.svg";
 import square from "./assets/1x1.jpg";
 import rectangle from "./assets/3x4.jpg";
 import rectangle2 from "./assets/3x2.jpg";
 import sample from "./assets/sample.mp3";
 import "./App.css";
+import "./assets/image-container.css";
 import { ImageContainer, Gallery } from "./components";
 
 function App() {
+  const galleryRef = useRef();
+
+  useLayoutEffect(() => {
+    onLoadAnimation();
+  }, []);
+
+  function onLoadAnimation() {
+    console.log("animating");
+    gsap.fromTo(
+      ".gallery__image-container",
+      {
+        scale: 0.96,
+      },
+      { scale: 1, duration: 0.75, ease: "sine.in", stagger: 0.125 },
+    );
+
+    gsap.fromTo(
+      ".gallery__image-container",
+      {
+        opacity: 0,
+      },
+      { opacity: 1, duration: 1, ease: "sine.in", stagger: 0.125 },
+    );
+  }
+
   const initialSongMap = {
     currentSong: "",
     songs: [
@@ -70,6 +96,7 @@ function App() {
           dataSongAudio={sample}
           handleClick={handleClick}
           isActive={songMap.songs[0].isActive}
+          galleryRef={galleryRef}
         />
 
         <ImageContainer
@@ -82,6 +109,7 @@ function App() {
           dataSongAudio={sample}
           handleClick={handleClick}
           isActive={songMap.songs[1].isActive}
+          galleryRef={galleryRef}
         />
 
         <ImageContainer
@@ -94,6 +122,7 @@ function App() {
           dataSongAudio={sample}
           handleClick={handleClick}
           isActive={songMap.songs[2].isActive}
+          galleryRef={galleryRef}
         />
 
         <ImageContainer
@@ -106,6 +135,7 @@ function App() {
           dataSongAudio={sample}
           handleClick={handleClick}
           isActive={songMap.songs[3].isActive}
+          galleryRef={galleryRef}
         />
 
         <ImageContainer
@@ -118,6 +148,7 @@ function App() {
           dataSongAudio={sample}
           handleClick={handleClick}
           isActive={songMap.songs[4].isActive}
+          galleryRef={galleryRef}
         />
 
         <ImageContainer
@@ -130,6 +161,7 @@ function App() {
           dataSongAudio={sample}
           handleClick={handleClick}
           isActive={songMap.songs[5].isActive}
+          galleryRef={galleryRef}
         />
 
         <ImageContainer
@@ -142,6 +174,7 @@ function App() {
           dataSongAudio={sample}
           handleClick={handleClick}
           isActive={songMap.songs[6].isActive}
+          galleryRef={galleryRef}
         />
 
         <ImageContainer
@@ -154,6 +187,7 @@ function App() {
           dataSongAudio={sample}
           handleClick={handleClick}
           isActive={songMap.songs[7].isActive}
+          galleryRef={galleryRef}
         />
       </Gallery>
     </>

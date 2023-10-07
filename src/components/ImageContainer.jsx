@@ -9,7 +9,11 @@ export function ImageContainer(props) {
   }
 
   return (
-    <div id={formattedSongId} className="gallery__image-container">
+    <div
+      id={formattedSongId}
+      className="gallery__image-container"
+      ref={props.galleryRef}
+    >
       <button
         type="button"
         className="gallery__play-btn"

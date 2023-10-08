@@ -1,0 +1,10 @@
+.cursor {
+	border: 1px solid red;
+	border-radius: 50%;
+	height: 10px;
+	width: 10px;
+	position: fixed;
+  top: 0;
+  left: 0;
+	pointer-events: none;
+}

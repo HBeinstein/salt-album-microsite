@@ -6,24 +6,41 @@ import rectangle from "./assets/3x4.jpg";
 import rectangle2 from "./assets/3x2.jpg";
 import sample from "./assets/sample.mp3";
 import "./App.css";
+import "./assets/cursor.css";
 import "./assets/image-container.css";
-import { ImageContainer, Gallery } from "./components";
+import { ImageContainer, Gallery, Cursor } from "./components";
 
 function App() {
-  const galleryRef = useRef();
+  const galleryRef = useRef(null);
 
-  useLayoutEffect(() => {
-    onLoadAnimation();
-  }, []);
+  let ctx = gsap.context(() => {
+    useLayoutEffect(() => {
+      fadeInImages();
+      handleStickyCursor();
 
-  function onLoadAnimation() {
-    console.log("animating");
+      return () => ctx.revert();
+    }, []);
+  }, galleryRef);
+
+  function fadeInImages() {
+    const staggerParams = {
+      each: 0.1,
+      from: "edges",
+      grid: "auto",
+      ease: "sine.in",
+    };
+
     gsap.fromTo(
       ".gallery__image-container",
       {
-        scale: 0.96,
+        scale: 0.97,
       },
-      { scale: 1, duration: 0.75, ease: "sine.in", stagger: 0.125 },
+      {
+        scale: 1,
+        duration: 0.75,
+        ease: "sine.in",
+        stagger: staggerParams,
+      },
     );
 
     gsap.fromTo(
@@ -31,8 +48,30 @@ function App() {
       {
         opacity: 0,
       },
-      { opacity: 1, duration: 1, ease: "sine.in", stagger: 0.125 },
+      {
+        opacity: 1,
+        duration: 1,
+        ease: "sine.in",
+        stagger: staggerParams,
+      },
     );
+  }
+
+  function handleStickyCursor() {
+    gsap.set(".cursor", { xPercent: -50, yPercent: -50 });
+
+    let xTo = gsap.quickTo(".cursor", "x", {
+      duration: 0.05,
+      ease: "sine.in",
+    });
+    let yTo = gsap.quickTo(".cursor", "y", {
+      duration: 0.05,
+      ease: "sine.in",
+    });
+    window.addEventListener("mousemove", (e) => {
+      xTo(e.clientX);
+      yTo(e.clientY);
+    });
   }
 
   const initialSongMap = {
@@ -85,7 +124,7 @@ function App() {
 
   return (
     <>
-      <Gallery>
+      <Gallery galleryRef={galleryRef}>
         <ImageContainer
           src={rectangle}
           className={"gallery__image gallery__image--3x4"}
@@ -96,7 +135,6 @@ function App() {
           dataSongAudio={sample}
           handleClick={handleClick}
           isActive={songMap.songs[0].isActive}
-          galleryRef={galleryRef}
         />
 
         <ImageContainer
@@ -109,7 +147,6 @@ function App() {
           dataSongAudio={sample}
           handleClick={handleClick}
           isActive={songMap.songs[1].isActive}
-          galleryRef={galleryRef}
         />
 
         <ImageContainer
@@ -122,7 +159,6 @@ function App() {
           dataSongAudio={sample}
           handleClick={handleClick}
           isActive={songMap.songs[2].isActive}
-          galleryRef={galleryRef}
         />
 
         <ImageContainer
@@ -135,7 +171,6 @@ function App() {
           dataSongAudio={sample}
           handleClick={handleClick}
           isActive={songMap.songs[3].isActive}
-          galleryRef={galleryRef}
         />
 
         <ImageContainer
@@ -148,7 +183,6 @@ function App() {
           dataSongAudio={sample}
           handleClick={handleClick}
           isActive={songMap.songs[4].isActive}
-          galleryRef={galleryRef}
         />
 
         <ImageContainer
@@ -161,7 +195,6 @@ function App() {
           dataSongAudio={sample}
           handleClick={handleClick}
           isActive={songMap.songs[5].isActive}
-          galleryRef={galleryRef}
         />
 
         <ImageContainer
@@ -174,7 +207,6 @@ function App() {
           dataSongAudio={sample}
           handleClick={handleClick}
           isActive={songMap.songs[6].isActive}
-          galleryRef={galleryRef}
         />
 
         <ImageContainer
@@ -187,9 +219,10 @@ function App() {
           dataSongAudio={sample}
           handleClick={handleClick}
           isActive={songMap.songs[7].isActive}
-          galleryRef={galleryRef}
         />
       </Gallery>
+
+      <Cursor></Cursor>
     </>
   );
 }

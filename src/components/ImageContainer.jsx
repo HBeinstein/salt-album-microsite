@@ -9,8 +9,13 @@ export function ImageContainer(props) {
   }
 
   return (
-    <div id={formattedSongId} className="gallery__image-container">
-      <button
+    <div
+      id={formattedSongId}
+      className="gallery__image-container"
+      onMouseEnter={props.onEnter}
+      onMouseLeave={props.onLeave}
+    >
+      {/* <button
         type="button"
         className="gallery__play-btn"
         onClick={() => {
@@ -20,7 +25,7 @@ export function ImageContainer(props) {
         }}
       >
         {btnText}
-      </button>
+      </button> */}
       <audio id={props.dataSongName} src={props.dataSongAudio}></audio>
       <img
         src={props.src}
@@ -30,6 +35,12 @@ export function ImageContainer(props) {
         alt={props.alt}
         data-song={props.dataSongName}
         loading={props.loading}
+        onClick={() => {
+          const container = document.getElementById(formattedSongId);
+          const songAudio = container.querySelector("audio");
+          props.handleClick(props.dataSongName, songAudio);
+        }}
+        data-isactive={props.isActive}
       ></img>
     </div>
   );

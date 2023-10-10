@@ -1,6 +1,5 @@
 import { gsap } from "gsap";
-import { useState, useLayoutEffect, useRef } from "react";
-import viteLogo from "/vite.svg";
+import { useState, useLayoutEffect, useRef, useEffect } from "react";
 import square from "./assets/1x1.jpg";
 import rectangle from "./assets/3x4.jpg";
 import rectangle2 from "./assets/3x2.jpg";
@@ -11,7 +10,66 @@ import "./assets/image-container.css";
 import { ImageContainer, Gallery, Cursor } from "./components";
 
 function App() {
+  // Song Logic
+  const initialSongMap = {
+    currentSong: "",
+    songs: [
+      { name: "Cool Cool Cool", isActive: false },
+      { name: "Apocalypse", isActive: false },
+      { name: "How Sweet Love Is", isActive: false },
+      { name: "Plum Season", isActive: false },
+      { name: "Take Hold Of The Light", isActive: false },
+      { name: "Too Soon", isActive: false },
+      { name: "Vampira", isActive: false },
+      { name: "Young Blood", isActive: false },
+    ],
+  };
+
+  const [songMap, updateSongMap] = useState(initialSongMap);
+
+  const handleClick = (songName, upcomingSong) => {
+    const prevSong = document.getElementById(`${songMap.currentSong}`);
+    if (prevSong && prevSong.id !== upcomingSong.id) {
+      prevSong.pause();
+    }
+
+    if (!upcomingSong.currentTime || upcomingSong.paused) {
+      upcomingSong.play();
+      updateSongMap({
+        ...songMap,
+        ...{ currentSong: songName },
+        ...{
+          songs: songMap.songs.map((s) =>
+            s.name === songName
+              ? { ...s, name: songName, isActive: true }
+              : { ...s, name: s.name, isActive: false },
+          ),
+        },
+      });
+      // TODO: Remove this
+      // returnUpdatedBtnText(upcomingSong.nextElementSibling);
+    } else {
+      updateSongMap({
+        ...songMap,
+        ...{
+          songs: songMap.songs.map((s) =>
+            s.isActive === true ? { ...s, name: s.name, isActive: false } : s,
+          ),
+        },
+      });
+      upcomingSong.pause();
+    }
+  };
+
+  // Animations
+
+  const [btnText, updateBtnText] = useState("play");
   const galleryRef = useRef(null);
+
+  // Update btn text when songMap updates
+  useEffect(() => {
+    btnText === "play" ? updateBtnText("pause") : updateBtnText("play");
+  }, [songMap]);
 
   let ctx = gsap.context(() => {
     useLayoutEffect(() => {
@@ -58,69 +116,91 @@ function App() {
   }
 
   function handleStickyCursor() {
-    gsap.set(".cursor", { xPercent: -50, yPercent: -50 });
+    gsap.set(".outer-cursor", { xPercent: -50, yPercent: -50 });
+    gsap.set(".inner-cursor", { xPercent: -50, yPercent: -50 });
 
-    let xTo = gsap.quickTo(".cursor", "x", {
-      duration: 0.05,
+    let xTo = gsap.quickTo(".outer-cursor", "x", {
+      duration: 0.025,
       ease: "sine.in",
     });
-    let yTo = gsap.quickTo(".cursor", "y", {
-      duration: 0.05,
+    let yTo = gsap.quickTo(".outer-cursor", "y", {
+      duration: 0.025,
       ease: "sine.in",
     });
     window.addEventListener("mousemove", (e) => {
       xTo(e.clientX);
       yTo(e.clientY);
     });
+
+    let xToInner = gsap.quickTo(".inner-cursor", "x", {
+      duration: 0.001,
+      ease: "sine.in",
+    });
+    let yToInner = gsap.quickTo(".inner-cursor", "y", {
+      duration: 0.001,
+      ease: "sine.in",
+    });
+    window.addEventListener("mousemove", (e) => {
+      xToInner(e.clientX);
+      yToInner(e.clientY);
+    });
   }
 
-  const initialSongMap = {
-    currentSong: "",
-    songs: [
-      { name: "Cool Cool Cool", isActive: false },
-      { name: "Apocalypse", isActive: false },
-      { name: "How Sweet Love Is", isActive: false },
-      { name: "Plum Season", isActive: false },
-      { name: "Take Hold Of The Light", isActive: false },
-      { name: "Too Soon", isActive: false },
-      { name: "Vampira", isActive: false },
-      { name: "Young Blood", isActive: false },
-    ],
-  };
-
-  const [songMap, updateSongMap] = useState(initialSongMap);
-
-  const handleClick = (songName, upcomingSong) => {
-    const prevSong = document.getElementById(`${songMap.currentSong}`);
-    if (prevSong && prevSong.id !== upcomingSong.id) {
-      prevSong.pause();
+  function returnUpdatedBtnText(target) {
+    if (target.dataset.isactive === "true" && btnText != "pause") {
+      console.log("pause");
+      updateBtnText("pause");
     }
 
-    if (!upcomingSong.currentTime || upcomingSong.paused) {
-      upcomingSong.play();
-      updateSongMap({
-        ...songMap,
-        ...{ currentSong: songName },
-        ...{
-          songs: songMap.songs.map((s) =>
-            s.name === songName
-              ? { ...s, name: songName, isActive: true }
-              : { ...s, name: s.name, isActive: false },
-          ),
-        },
-      });
-    } else {
-      updateSongMap({
-        ...songMap,
-        ...{
-          songs: songMap.songs.map((s) =>
-            s.isActive === true ? { ...s, name: s.name, isActive: false } : s,
-          ),
-        },
-      });
-      upcomingSong.pause();
+    if (target.dataset.isactive === "false" && btnText != "play") {
+      console.log("play");
+      updateBtnText("play");
     }
-  };
+  }
+
+  function handleMouseEnter(event) {
+    returnUpdatedBtnText(event.target);
+
+    gsap.to(".inner-cursor__text", {
+      fontSize: 18,
+      duration: 0.175,
+      ease: "sine.in",
+    });
+
+    gsap.to(".inner-cursor__background", {
+      width: 80,
+      height: 80,
+      duration: 0.175,
+      ease: "sine.in",
+    });
+
+    gsap.to(".outer-cursor", {
+      opacity: 0,
+      duration: 0.175,
+      ease: "sine.in",
+    });
+  }
+
+  function handleMouseLeave() {
+    gsap.to(".inner-cursor__text", {
+      fontSize: 0,
+      duration: 0.175,
+      ease: "sine.in",
+    });
+
+    gsap.to(".inner-cursor__background", {
+      width: 6,
+      height: 6,
+      duration: 0.175,
+      ease: "sine.in",
+    });
+
+    gsap.to(".outer-cursor", {
+      opacity: 1,
+      duration: 0.175,
+      ease: "sine.in",
+    });
+  }
 
   return (
     <>
@@ -135,6 +215,8 @@ function App() {
           dataSongAudio={sample}
           handleClick={handleClick}
           isActive={songMap.songs[0].isActive}
+          onEnter={handleMouseEnter}
+          onLeave={handleMouseLeave}
         />
 
         <ImageContainer
@@ -147,6 +229,8 @@ function App() {
           dataSongAudio={sample}
           handleClick={handleClick}
           isActive={songMap.songs[1].isActive}
+          onEnter={handleMouseEnter}
+          onLeave={handleMouseLeave}
         />
 
         <ImageContainer
@@ -159,6 +243,8 @@ function App() {
           dataSongAudio={sample}
           handleClick={handleClick}
           isActive={songMap.songs[2].isActive}
+          onEnter={handleMouseEnter}
+          onLeave={handleMouseLeave}
         />
 
         <ImageContainer
@@ -171,6 +257,8 @@ function App() {
           dataSongAudio={sample}
           handleClick={handleClick}
           isActive={songMap.songs[3].isActive}
+          onEnter={handleMouseEnter}
+          onLeave={handleMouseLeave}
         />
 
         <ImageContainer
@@ -183,6 +271,8 @@ function App() {
           dataSongAudio={sample}
           handleClick={handleClick}
           isActive={songMap.songs[4].isActive}
+          onEnter={handleMouseEnter}
+          onLeave={handleMouseLeave}
         />
 
         <ImageContainer
@@ -195,6 +285,8 @@ function App() {
           dataSongAudio={sample}
           handleClick={handleClick}
           isActive={songMap.songs[5].isActive}
+          onEnter={handleMouseEnter}
+          onLeave={handleMouseLeave}
         />
 
         <ImageContainer
@@ -207,6 +299,8 @@ function App() {
           dataSongAudio={sample}
           handleClick={handleClick}
           isActive={songMap.songs[6].isActive}
+          onEnter={handleMouseEnter}
+          onLeave={handleMouseLeave}
         />
 
         <ImageContainer
@@ -219,10 +313,12 @@ function App() {
           dataSongAudio={sample}
           handleClick={handleClick}
           isActive={songMap.songs[7].isActive}
+          onEnter={handleMouseEnter}
+          onLeave={handleMouseLeave}
         />
       </Gallery>
 
-      <Cursor></Cursor>
+      <Cursor btnText={btnText}></Cursor>
     </>
   );
 }

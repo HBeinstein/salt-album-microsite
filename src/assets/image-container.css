@@ -5,6 +5,8 @@
   grid-template-columns: repeat(auto-fill, 60px);
   grid-template-rows: repeat(24, minmax(0, 1fr));
   height: 100%;
+  overflow: scroll;
+  scroll-direction: horizontal;
   width: 2200px;
   .gallery__image-container {
     line-height: .5;

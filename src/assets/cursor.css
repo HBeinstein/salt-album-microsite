@@ -1,10 +1,42 @@
-.cursor {
-	border: 1px solid red;
+.outer-cursor {
+	border: 2px solid rgb(33, 33, 33);
 	border-radius: 50%;
-	height: 10px;
-	width: 10px;
+	height: 30px;
+	width: 30px;
 	position: fixed;
   top: 0;
   left: 0;
 	pointer-events: none;
+}
+
+.inner-cursor {
+	position: fixed;
+	top: 0;
+  left: 0;
+	pointer-events: none;
+	.inner-cursor__container {
+		height: 100%;
+		width: 100%;
+		position: relative;
+		.inner-cursor__background{
+			height: 6px;
+			width: 6px;
+			background-color: black;
+			border-radius: 50%;
+			position: absolute;
+			top: 0;
+			left: 0;
+			margin: 0;
+			transform: translate(-50%, -50%);
+		}
+		.inner-cursor__text {
+			color: white;
+			position: absolute;
+			top: 0;
+			left: 0;
+			margin: 0;
+			transform: translate(-50%, -50%);
+			font-size: 0;
+		}
+	}
 }

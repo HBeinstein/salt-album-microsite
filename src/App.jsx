@@ -29,11 +29,13 @@ function App() {
 
   const handleClick = (songName, upcomingSong) => {
     const prevSong = document.getElementById(`${songMap.currentSong}`);
+    console.log(prevSong, upcomingSong);
     if (prevSong && prevSong.id !== upcomingSong.id) {
       prevSong.pause();
     }
 
     if (!upcomingSong.currentTime || upcomingSong.paused) {
+      handleButtonTransition();
       upcomingSong.play();
       updateSongMap({
         ...songMap,
@@ -46,9 +48,8 @@ function App() {
           ),
         },
       });
-      // TODO: Remove this
-      // returnUpdatedBtnText(upcomingSong.nextElementSibling);
     } else {
+      handleButtonTransition();
       updateSongMap({
         ...songMap,
         ...{
@@ -66,11 +67,6 @@ function App() {
   const [btnText, updateBtnText] = useState("play");
   const galleryRef = useRef(null);
 
-  // Update btn text when songMap updates
-  useEffect(() => {
-    btnText === "play" ? updateBtnText("pause") : updateBtnText("play");
-  }, [songMap]);
-
   let ctx = gsap.context(() => {
     useLayoutEffect(() => {
       fadeInImages();
@@ -78,6 +74,11 @@ function App() {
 
       return () => ctx.revert();
     }, []);
+
+    // Update btn text when songMap updates
+    useEffect(() => {
+      btnText === "play" ? updateBtnText("pause") : updateBtnText("play");
+    }, [songMap]);
   }, galleryRef);
 
   function fadeInImages() {
@@ -146,60 +147,89 @@ function App() {
     });
   }
 
-  function returnUpdatedBtnText(target) {
-    if (target.dataset.isactive === "true" && btnText != "pause") {
-      console.log("pause");
-      updateBtnText("pause");
-    }
-
-    if (target.dataset.isactive === "false" && btnText != "play") {
-      console.log("play");
-      updateBtnText("play");
-    }
+  function handleButtonTransition() {
+    const timeline = gsap.timeline();
+    timeline
+      .to(".inner-cursor__text", {
+        opacity: "0",
+        duration: 0.01,
+        ease: "sine.in",
+      })
+      .to(".inner-cursor__background", {
+        rotationY: "+=180",
+        duration: 0.5,
+        ease: "sine.in",
+      })
+      .to(".inner-cursor__text", {
+        opacity: "1",
+        duration: 0.01,
+        ease: "sine.in",
+      });
   }
 
   function handleMouseEnter(event) {
-    returnUpdatedBtnText(event.target);
+    if (event.target.dataset.isactive === "true" && btnText != "pause") {
+      updateBtnText("pause");
+    }
 
-    gsap.to(".inner-cursor__text", {
-      fontSize: 18,
-      duration: 0.175,
-      ease: "sine.in",
-    });
-
-    gsap.to(".inner-cursor__background", {
-      width: 80,
-      height: 80,
-      duration: 0.175,
-      ease: "sine.in",
-    });
-
-    gsap.to(".outer-cursor", {
-      opacity: 0,
-      duration: 0.175,
-      ease: "sine.in",
-    });
+    if (event.target.dataset.isactive === "false" && btnText != "play") {
+      updateBtnText("play");
+    }
+    const timeline = gsap.timeline();
+    timeline
+      .to(".inner-cursor__text", {
+        fontSize: 18,
+        duration: 0.175,
+        ease: "sine.in",
+      })
+      .to(
+        ".inner-cursor__background",
+        {
+          width: 80,
+          height: 80,
+          duration: 0.175,
+          ease: "sine.in",
+        },
+        "<",
+      )
+      .to(
+        ".outer-cursor",
+        {
+          opacity: 0,
+          duration: 0.175,
+          ease: "sine.in",
+        },
+        "<",
+      );
   }
 
   function handleMouseLeave() {
-    gsap.to(".inner-cursor__text", {
-      fontSize: 0,
-      duration: 0.175,
-      ease: "sine.in",
-    });
-
-    gsap.to(".inner-cursor__background", {
-      width: 6,
-      height: 6,
-      duration: 0.175,
-      ease: "sine.in",
-    });
-
-    gsap.to(".outer-cursor", {
-      opacity: 1,
-      duration: 0.175,
-      ease: "sine.in",
-    });
+    const timeline = gsap.timeline();
+    timeline
+      .to(".inner-cursor__text", {
+        fontSize: 0,
+        duration: 0.175,
+        ease: "sine.in",
+      })
+      .to(
+        ".inner-cursor__background",
+        {
+          width: 6,
+          height: 6,
+          duration: 0.175,
+          ease: "sine.in",
+        },
+        "<",
+      )
+      .to(
+        ".outer-cursor",
+        {
+          opacity: 1,
+          duration: 0.175,
+          ease: "sine.in",
+        },
+        "<",
+      );
   }
 
   return (

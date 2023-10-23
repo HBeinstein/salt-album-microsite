@@ -1,5 +1,9 @@
 import { ImageContainer } from "./ImageContainer";
 
-export function Gallery({ children }) {
-  return <div className="gallery">{children}</div>;
+export function Gallery({ children }, props) {
+  return (
+    <div className="gallery" ref={props.galleryRef}>
+      {children}
+    </div>
+  );
 }

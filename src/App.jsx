@@ -1,4 +1,5 @@
 import { gsap } from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { useState, useLayoutEffect, useRef, useEffect } from "react";
 import square from "./assets/1x1.jpg";
 import rectangle from "./assets/3x4.jpg";
@@ -9,7 +10,37 @@ import "./assets/cursor.css";
 import "./assets/image-container.css";
 import { ImageContainer, Gallery, Cursor } from "./components";
 
+gsap.registerPlugin(ScrollTrigger);
+
 function App() {
+  // Set horizontal scroll
+
+  // Create array of refs for use in scroll
+  const scrollRefs = useRef([]);
+  scrollRefs.current = [];
+
+  const addToRefs = (el) => {
+    if (el && !scrollRefs.current.includes(el)) {
+      // console.log("test");
+      scrollRefs.current.push(el);
+      console.log("refs", scrollRefs.current);
+    }
+  };
+
+  // let sections = gsap.utils.toArray(".section");
+
+  // gsap.to(sections, {
+  //   xPercent: -100 * (sections.length - 1),
+  //   ease: "none",
+  //   scrollTrigger: {
+  //     trigger: ".app",
+  //     pin: true,
+  //     scrub: 1,
+  //     // base vertical scrolling on how wide the container is so it feels more natural.
+  //     //end: "+=3500",
+  //   },
+  // });
+
   // Song Logic
   const initialSongMap = {
     currentSong: "",
@@ -152,7 +183,7 @@ function App() {
     timeline
       .to(".inner-cursor__text", {
         opacity: "0",
-        duration: 0.01,
+        duration: 0.001,
         ease: "sine.in",
       })
       .to(".inner-cursor__background", {
@@ -162,7 +193,7 @@ function App() {
       })
       .to(".inner-cursor__text", {
         opacity: "1",
-        duration: 0.01,
+        duration: 0.15,
         ease: "sine.in",
       });
   }
@@ -233,8 +264,16 @@ function App() {
   }
 
   return (
-    <>
-      <Gallery galleryRef={galleryRef}>
+    <div className="app">
+      <div className="section test-component" ref={addToRefs}></div>
+      {/* <Gallery galleryRef={galleryRef} scrollRef={addToRefs}> */}
+      <div
+        className="gallery section"
+        ref={(el) => {
+          galleryRef.current = el;
+          addToRefs(el);
+        }}
+      >
         <ImageContainer
           src={rectangle}
           className={"gallery__image gallery__image--3x4"}
@@ -346,10 +385,11 @@ function App() {
           onEnter={handleMouseEnter}
           onLeave={handleMouseLeave}
         />
-      </Gallery>
+      </div>
+      {/* </Gallery> */}
 
       <Cursor btnText={btnText}></Cursor>
-    </>
+    </div>
   );
 }
 

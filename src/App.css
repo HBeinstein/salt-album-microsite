@@ -1,3 +1,15 @@
 body {
 	cursor: none;
+	overscroll-behavior: none;
+}
+
+.app {
+	/* display: flex; */
+	overscroll-behavior: none;
+	overflow-x: hidden;
+}
+
+.test-component {
+	min-width: 500px;
+	height: 100vh;
 }

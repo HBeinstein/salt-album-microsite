@@ -30,7 +30,7 @@ export function ImageContainer(props) {
       <img
         src={props.src}
         className={props.className}
-        height={`${props.width}%`}
+        // height={`${props.height}%`}
         width="auto"
         alt={props.alt}
         data-song={props.dataSongName}

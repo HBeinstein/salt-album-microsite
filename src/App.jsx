@@ -1,5 +1,5 @@
-import { gsap } from "gsap";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
+import gsap from "gsap";
+import ScrollTrigger from "gsap/ScrollTrigger";
 import { useState, useLayoutEffect, useRef, useEffect } from "react";
 import square from "./assets/1x1.jpg";
 import rectangle from "./assets/3x4.jpg";
@@ -8,38 +8,32 @@ import sample from "./assets/sample.mp3";
 import "./App.css";
 import "./assets/cursor.css";
 import "./assets/image-container.css";
-import { ImageContainer, Gallery, Cursor } from "./components";
+import { ImageContainer, Cursor } from "./components";
+import { songs } from "./utils/songs";
 
 gsap.registerPlugin(ScrollTrigger);
 
 function App() {
   // Set horizontal scroll
+  const app = useRef(null);
+  const scrollContainer = useRef(null);
 
-  // Create array of refs for use in scroll
-  const scrollRefs = useRef([]);
-  scrollRefs.current = [];
-
-  const addToRefs = (el) => {
-    if (el && !scrollRefs.current.includes(el)) {
-      // console.log("test");
-      scrollRefs.current.push(el);
-      console.log("refs", scrollRefs.current);
-    }
-  };
-
-  // let sections = gsap.utils.toArray(".section");
-
-  // gsap.to(sections, {
-  //   xPercent: -100 * (sections.length - 1),
-  //   ease: "none",
-  //   scrollTrigger: {
-  //     trigger: ".app",
-  //     pin: true,
-  //     scrub: 1,
-  //     // base vertical scrolling on how wide the container is so it feels more natural.
-  //     //end: "+=3500",
-  //   },
-  // });
+  useLayoutEffect(() => {
+    let ctx = gsap.context(() => {
+      let sections = gsap.utils.toArray(".section");
+      gsap.to(sections, {
+        xPercent: -100 * (sections.length - 1),
+        ease: "none",
+        scrollTrigger: {
+          trigger: scrollContainer.current,
+          pin: true,
+          scrub: 1,
+          end: () => "+=" + scrollContainer.current.offsetWidth,
+        },
+      });
+    }, scrollContainer);
+    return () => ctx.revert();
+  }, []);
 
   // Song Logic
   const initialSongMap = {
@@ -60,7 +54,6 @@ function App() {
 
   const handleClick = (songName, upcomingSong) => {
     const prevSong = document.getElementById(`${songMap.currentSong}`);
-    console.log(prevSong, upcomingSong);
     if (prevSong && prevSong.id !== upcomingSong.id) {
       prevSong.pause();
     }
@@ -264,131 +257,33 @@ function App() {
   }
 
   return (
-    <div className="app">
-      <div className="section test-component" ref={addToRefs}></div>
-      {/* <Gallery galleryRef={galleryRef} scrollRef={addToRefs}> */}
-      <div
-        className="gallery section"
-        ref={(el) => {
-          galleryRef.current = el;
-          addToRefs(el);
-        }}
-      >
-        <ImageContainer
-          src={rectangle}
-          className={"gallery__image gallery__image--3x4"}
-          height={100}
-          alt={"square image"}
-          loading={"eager"}
-          dataSongName={songMap.songs[0].name}
-          dataSongAudio={sample}
-          handleClick={handleClick}
-          isActive={songMap.songs[0].isActive}
-          onEnter={handleMouseEnter}
-          onLeave={handleMouseLeave}
-        />
-
-        <ImageContainer
-          src={rectangle2}
-          className={"gallery__image gallery__image--3x2"}
-          height={100}
-          alt={"square image"}
-          loading={"eager"}
-          dataSongName={songMap.songs[1].name}
-          dataSongAudio={sample}
-          handleClick={handleClick}
-          isActive={songMap.songs[1].isActive}
-          onEnter={handleMouseEnter}
-          onLeave={handleMouseLeave}
-        />
-
-        <ImageContainer
-          src={rectangle}
-          className={"gallery__image gallery__image--3x4"}
-          height={300}
-          alt={"square image"}
-          loading={"eager"}
-          dataSongName={songMap.songs[2].name}
-          dataSongAudio={sample}
-          handleClick={handleClick}
-          isActive={songMap.songs[2].isActive}
-          onEnter={handleMouseEnter}
-          onLeave={handleMouseLeave}
-        />
-
-        <ImageContainer
-          src={rectangle2}
-          className={"gallery__image gallery__image--3x2"}
-          height={300}
-          alt={"square image"}
-          loading={"eager"}
-          dataSongName={songMap.songs[3].name}
-          dataSongAudio={sample}
-          handleClick={handleClick}
-          isActive={songMap.songs[3].isActive}
-          onEnter={handleMouseEnter}
-          onLeave={handleMouseLeave}
-        />
-
-        <ImageContainer
-          src={square}
-          className={"gallery__image gallery__image--1x1"}
-          height={300}
-          alt={"square image"}
-          loading={"eager"}
-          dataSongName={songMap.songs[4].name}
-          dataSongAudio={sample}
-          handleClick={handleClick}
-          isActive={songMap.songs[4].isActive}
-          onEnter={handleMouseEnter}
-          onLeave={handleMouseLeave}
-        />
-
-        <ImageContainer
-          src={rectangle2}
-          className={"gallery__image gallery__image--3x2"}
-          height={300}
-          alt={"square image"}
-          loading={"eager"}
-          dataSongName={songMap.songs[5].name}
-          dataSongAudio={sample}
-          handleClick={handleClick}
-          isActive={songMap.songs[5].isActive}
-          onEnter={handleMouseEnter}
-          onLeave={handleMouseLeave}
-        />
-
-        <ImageContainer
-          src={rectangle}
-          className={"gallery__image gallery__image--3x4"}
-          height={300}
-          alt={"square image"}
-          loading={"eager"}
-          dataSongName={songMap.songs[6].name}
-          dataSongAudio={sample}
-          handleClick={handleClick}
-          isActive={songMap.songs[6].isActive}
-          onEnter={handleMouseEnter}
-          onLeave={handleMouseLeave}
-        />
-
-        <ImageContainer
-          src={rectangle}
-          className={"gallery__image gallery__image--3x4"}
-          height={300}
-          alt={"square image"}
-          loading={"eager"}
-          dataSongName={songMap.songs[7].name}
-          dataSongAudio={sample}
-          handleClick={handleClick}
-          isActive={songMap.songs[7].isActive}
-          onEnter={handleMouseEnter}
-          onLeave={handleMouseLeave}
-        />
+    <div className="app" ref={app}>
+      <div className="scrollContainer" ref={scrollContainer}>
+        <div className="section test-component"></div>
+        <div className="gallery section" ref={galleryRef}>
+          {songs.map((song) => {
+            return (
+              <ImageContainer
+                key={song.name}
+                src={song.imageSrc}
+                className={`gallery__image gallery__image--${song.imageAspectRatio}`}
+                height={100}
+                alt={song.imageAlt}
+                loading={"lazy"}
+                dataSongName={song.name}
+                dataSongAudio={song.audioSrc}
+                handleClick={handleClick}
+                isActive={
+                  songMap.songs.find((s) => s.name === song.name).isActive
+                }
+                onEnter={handleMouseEnter}
+                onLeave={handleMouseLeave}
+              ></ImageContainer>
+            );
+          })}
+        </div>
+        <Cursor btnText={btnText}></Cursor>
       </div>
-      {/* </Gallery> */}
-
-      <Cursor btnText={btnText}></Cursor>
     </div>
   );
 }

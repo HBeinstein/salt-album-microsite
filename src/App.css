@@ -3,8 +3,8 @@ body {
 	overscroll-behavior: none;
 }
 
-.app {
-	/* display: flex; */
+.scrollContainer {
+	display: flex;
 	overscroll-behavior: none;
 	overflow-x: hidden;
 }

@@ -23,8 +23,9 @@ function App() {
       let sections = gsap.utils.toArray(".section");
       gsap.to(sections, {
         xPercent: -100 * (sections.length - 1),
-        ease: "none",
+        ease: "sine",
         scrollTrigger: {
+          markers: true,
           trigger: scrollContainer.current,
           pin: true,
           scrub: 1,
@@ -282,6 +283,7 @@ function App() {
             );
           })}
         </div>
+        <div className="section test-component2"></div>
         <Cursor btnText={btnText}></Cursor>
       </div>
     </div>

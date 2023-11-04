@@ -5,6 +5,7 @@ body {
 
 .scrollContainer {
 	display: flex;
+	flex-wrap: nowrap;
 	overscroll-behavior: none;
 	overflow-x: hidden;
 }
@@ -12,4 +13,11 @@ body {
 .test-component {
 	min-width: 500px;
 	height: 100vh;
+	background-color: aqua;
+}
+
+.test-component2 {
+	min-width: 800px;
+	height: 100vh;
+	background-color: green;
 }

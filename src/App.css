@@ -17,7 +17,7 @@ body {
 }
 
 .test-component2 {
-	min-width: 800px;
+	min-width: 1600px;
 	height: 100vh;
 	background-color: green;
 }

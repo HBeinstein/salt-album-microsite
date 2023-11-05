@@ -21,13 +21,15 @@ function App() {
   useLayoutEffect(() => {
     let ctx = gsap.context(() => {
       let sections = gsap.utils.toArray(".section");
+
+      // Handle overall horizontal scroll
       gsap.to(sections, {
         x: () =>
           -(
             scrollContainer.current.scrollWidth -
             document.documentElement.clientWidth
           ) + "px",
-        // ease: "sine",
+        ease: "sine",
         scrollTrigger: {
           markers: true,
           trigger: scrollContainer.current,
@@ -38,6 +40,35 @@ function App() {
             document.documentElement.clientWidth,
         },
       });
+
+      // Handle gallery image load effect on scroll
+      const staggerParams = {
+        each: 0.1,
+        from: "edges",
+        grid: "auto",
+        ease: "sine.in",
+      };
+
+      let timeline = gsap.timeline({
+        scrollTrigger: {
+          start: "400px",
+          trigger: "gallery__image-container",
+        },
+      });
+
+      timeline
+        .from(".gallery__image-container", {
+          scale: 0.97,
+          duration: 0.75,
+          ease: "sine.in",
+          stagger: staggerParams,
+        })
+        .from(".gallery__image-container", {
+          opacity: 0,
+          duration: 1,
+          ease: "sine.in",
+          stagger: staggerParams,
+        });
     }, scrollContainer);
     return () => ctx.revert();
   }, []);
@@ -100,7 +131,6 @@ function App() {
 
   let ctx = gsap.context(() => {
     useLayoutEffect(() => {
-      fadeInImages();
       handleStickyCursor();
 
       return () => ctx.revert();
@@ -111,41 +141,6 @@ function App() {
       btnText === "play" ? updateBtnText("pause") : updateBtnText("play");
     }, [songMap]);
   }, galleryRef);
-
-  function fadeInImages() {
-    const staggerParams = {
-      each: 0.1,
-      from: "edges",
-      grid: "auto",
-      ease: "sine.in",
-    };
-
-    gsap.fromTo(
-      ".gallery__image-container",
-      {
-        scale: 0.97,
-      },
-      {
-        scale: 1,
-        duration: 0.75,
-        ease: "sine.in",
-        stagger: staggerParams,
-      },
-    );
-
-    gsap.fromTo(
-      ".gallery__image-container",
-      {
-        opacity: 0,
-      },
-      {
-        opacity: 1,
-        duration: 1,
-        ease: "sine.in",
-        stagger: staggerParams,
-      },
-    );
-  }
 
   function handleStickyCursor() {
     gsap.set(".outer-cursor", { xPercent: -50, yPercent: -50 });
@@ -267,6 +262,7 @@ function App() {
     <div className="app" ref={app}>
       <div className="scrollContainer" ref={scrollContainer}>
         <div className="section test-component"></div>
+        <div className="section test-component2"></div>
         <div className="gallery section" ref={galleryRef}>
           {songs.map((song) => {
             return (
@@ -289,7 +285,6 @@ function App() {
             );
           })}
         </div>
-        <div className="section test-component2"></div>
         <Cursor btnText={btnText}></Cursor>
       </div>
     </div>

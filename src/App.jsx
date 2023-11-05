@@ -22,14 +22,20 @@ function App() {
     let ctx = gsap.context(() => {
       let sections = gsap.utils.toArray(".section");
       gsap.to(sections, {
-        xPercent: -100 * (sections.length - 1),
-        ease: "sine",
+        x: () =>
+          -(
+            scrollContainer.current.scrollWidth -
+            document.documentElement.clientWidth
+          ) + "px",
+        // ease: "sine",
         scrollTrigger: {
           markers: true,
           trigger: scrollContainer.current,
           pin: true,
           scrub: 1,
-          end: () => "+=" + scrollContainer.current.offsetWidth,
+          end: () =>
+            scrollContainer.current.scrollWidth -
+            document.documentElement.clientWidth,
         },
       });
     }, scrollContainer);

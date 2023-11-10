@@ -7,7 +7,7 @@ body {
 	display: flex;
 	flex-wrap: nowrap;
 	overscroll-behavior: none;
-	overflow-x: hidden;
+	overflow: hidden;
 }
 
 .test-component {

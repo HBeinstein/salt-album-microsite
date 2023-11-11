@@ -176,8 +176,8 @@ function App() {
         galleryRef.current.querySelectorAll(".gallery__image"),
       );
 
-      // refactor - https://chat.openai.com/c/b70b60ad-2011-40c1-ad9f-2ee7bd64ecbe
-      // Update image state refs
+      // TODO: refactor - https://chat.openai.com/c/b70b60ad-2011-40c1-ad9f-2ee7bd64ecbe
+      // Handle image hover animation
       elements.forEach((e, i) => {
         imgStateArr[i].current = gsap.to(e, {
           duration: 0.15,
@@ -243,20 +243,18 @@ function App() {
     }
   };
 
-  // Animations
-
-  let ctx = gsap.context(() => {
-    useLayoutEffect(() => {
+  // Sticky cursor animation
+  useLayoutEffect(() => {
+    let ctx = gsap.context(() => {
       handleStickyCursor();
+    }, app);
+    return () => ctx.revert();
+  }, []);
 
-      return () => ctx.revert();
-    }, []);
-
-    // Update btn text when songMap updates
-    useEffect(() => {
-      btnText === "play" ? updateBtnText("pause") : updateBtnText("play");
-    }, [songMap]);
-  }, galleryRef);
+  // Update btn text when songMap updates
+  useEffect(() => {
+    btnText === "play" ? updateBtnText("pause") : updateBtnText("play");
+  }, [songMap]);
 
   function handleStickyCursor() {
     gsap.set(".outer-cursor", { xPercent: -50, yPercent: -50 });
@@ -287,6 +285,12 @@ function App() {
       xToInner(e.clientX);
       yToInner(e.clientY);
     });
+
+    // let test = 1;
+    // gsap.ticker.add(function () {
+    //   console.log(test);
+    //   test += 1;
+    // });
   }
 
   function handleButtonTransition() {

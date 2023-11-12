@@ -5,8 +5,7 @@ import "./App.css";
 import "./assets/cursor.css";
 import "./assets/image-container.css";
 import { ImageContainer, Cursor } from "./components";
-import { songs } from "./utils/songs";
-import { Animation } from "./utils/animation";
+import { Animation, songs } from "./utils";
 
 gsap.registerPlugin(ScrollTrigger);
 

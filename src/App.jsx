@@ -1,11 +1,12 @@
 import gsap from "gsap";
 import ScrollTrigger from "gsap/ScrollTrigger";
 import { useState, useLayoutEffect, useRef, useEffect } from "react";
-import "./App.css";
-import "./assets/cursor.css";
-import "./assets/image-container.css";
 import { ImageContainer, Cursor } from "./components";
 import { Animation, songs } from "./utils";
+
+import "./App.css";
+import "./styles/cursor.css";
+import "./styles/image-container.css";
 
 gsap.registerPlugin(ScrollTrigger);
 

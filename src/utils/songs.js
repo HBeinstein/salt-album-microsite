@@ -1,4 +1,3 @@
-// isActive: songMap.songs.find((s) => s.name === "Cool Cool Cool").isActive,
 import square from "../assets/1x1.jpg";
 import rectangle from "../assets/3x4.jpg";
 import rectangle2 from "../assets/3x2.jpg";

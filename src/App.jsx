@@ -64,12 +64,46 @@ function App() {
       animationUtils.handleHorizontalScroll(scrollContainer);
     }, scrollContainer);
     return () => ctx.revert();
-  }, []);
+  }, [scrollContainer.current]);
 
   // Init image hover effects
   useLayoutEffect(() => {
     let ctx = gsap.context(() => {
       animationUtils.initImageEffects(galleryRef, imgStateArr);
+    }, galleryRef.current);
+    return () => ctx.revert();
+  }, []);
+
+  // Init image grid animation
+  const mouse = useRef({ x: 0, y: 0, moved: false });
+
+  function mouseMove(e) {
+    const rect = galleryRef.current.getBoundingClientRect();
+    mouse.current.moved = true;
+    mouse.x = e.clientX - rect.left;
+    mouse.y = e.clientY - rect.top;
+    // console.log(mouse);
+  }
+
+  useEffect(() => {
+    // this.gsap.ticker.add(() => {
+    //   if (mouse.moved) {
+    //     console.log("tick");
+    //     this.parallaxIt(imgStateArr[0].current.targets(), -100, mouse, rect);
+    //   }
+    //   mouse.moved = false;
+    // });
+  }, []);
+
+  useLayoutEffect(() => {
+    let ctx = gsap.context(() => {
+      const rect = galleryRef.current.getBoundingClientRect();
+      animationUtils.initGridAnimations(
+        imgStateArr,
+        galleryRef.current,
+        mouse,
+        rect,
+      );
     }, galleryRef.current);
     return () => ctx.revert();
   }, []);
@@ -127,7 +161,11 @@ function App() {
       <div className="scrollContainer" ref={scrollContainer}>
         <div className="section test-component"></div>
         <div className="section test-component2"></div>
-        <div className="gallery section" ref={galleryRef}>
+        <div
+          className="gallery section"
+          ref={galleryRef}
+          onMouseMove={mouseMove}
+        >
           {songs.map((song, index) => {
             return (
               <ImageContainer

@@ -84,24 +84,29 @@ function App() {
     mouse.y = e.clientY - rect.top;
   }
 
-  function animateGalleryPosition(target, movement, mouse, rect) {
-    gsap.to(target, {
-      duration: 0.5,
-      x: ((mouse.x - rect.width / 2) / rect.width) * movement,
-      y: ((mouse.y - rect.height / 2) / rect.height) * movement,
-    });
-    mouse.current.moved = false;
+  function updateGalleryPositionOnLeave() {
+    mouse.current.moved = true;
+    mouse.x = 0;
+    mouse.y = 0;
+    console.log("leaving");
+  }
+
+  function animateGalleryPosition(movement, mouse, rect) {
+    let ctx = gsap.context(() => {
+      gsap.to(".gallery__image", {
+        duration: 0.5,
+        x: ((mouse.x - rect.width / 2) / rect.width) * movement,
+        y: ((mouse.y - rect.height / 2) / rect.height) * movement,
+      });
+      mouse.current.moved = false;
+    }, galleryRef.current);
+    return () => ctx.revert();
   }
 
   function initGalleryAnimations(imgStateArr, gallery, mouse, rect) {
     gsap.ticker.add(() => {
       if (mouse.current.moved) {
-        animateGalleryPosition(
-          imgStateArr[0].current.targets(),
-          -4,
-          mouse,
-          rect,
-        );
+        animateGalleryPosition(-4, mouse, rect);
       }
     });
   }
@@ -171,6 +176,7 @@ function App() {
           className="gallery section"
           ref={galleryRef}
           onMouseMove={updateGalleryPosition}
+          onMouseLeave={updateGalleryPositionOnLeave}
         >
           {songs.map((song, index) => {
             return (

@@ -6,6 +6,7 @@
   grid-template-rows: repeat(24, minmax(0, 1fr));
   height: 100%;
   width: 2200px;
+  z-index: -50;
   .gallery__image-container {
     line-height: .5;
 		opacity: 1;

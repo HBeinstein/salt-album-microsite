@@ -146,29 +146,6 @@ export class Animation {
       });
   }
 
-  ////////////////////////////////////////
-  parallaxIt(target, movement, mouse, rect) {
-    this.gsap.to(target, {
-      duration: 0.5,
-      x: ((mouse.x - rect.width / 2) / rect.width) * movement,
-      y: ((mouse.y - rect.height / 2) / rect.height) * movement,
-    });
-  }
-
-  // How do I clean up gsap ticker?
-  // put this in useEffect and add or remove ticker based on mouse status?
-  initGridAnimations(imgStateArr, gallery, mouse, rect) {
-    this.gsap.ticker.add(() => {
-      if (mouse.moved) {
-        console.log("tick");
-        this.parallaxIt(imgStateArr[0].current.targets(), -100, mouse, rect);
-      }
-      mouse.moved = false;
-    });
-  }
-
-  ////////////////////////////////////////
-
   handleStickyCursor() {
     this.gsap.set(".outer-cursor", { xPercent: -50, yPercent: -50 });
     this.gsap.set(".inner-cursor", { xPercent: -50, yPercent: -50 });

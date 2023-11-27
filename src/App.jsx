@@ -74,36 +74,42 @@ function App() {
     return () => ctx.revert();
   }, []);
 
-  // Init image grid animation
+  // Gallery grid animation
   const mouse = useRef({ x: 0, y: 0, moved: false });
 
-  function mouseMove(e) {
+  function updateGalleryPosition(e) {
     const rect = galleryRef.current.getBoundingClientRect();
     mouse.current.moved = true;
     mouse.x = e.clientX - rect.left;
     mouse.y = e.clientY - rect.top;
-    // console.log(mouse);
   }
 
-  useEffect(() => {
-    // this.gsap.ticker.add(() => {
-    //   if (mouse.moved) {
-    //     console.log("tick");
-    //     this.parallaxIt(imgStateArr[0].current.targets(), -100, mouse, rect);
-    //   }
-    //   mouse.moved = false;
-    // });
-  }, []);
+  function animateGalleryPosition(target, movement, mouse, rect) {
+    gsap.to(target, {
+      duration: 0.5,
+      x: ((mouse.x - rect.width / 2) / rect.width) * movement,
+      y: ((mouse.y - rect.height / 2) / rect.height) * movement,
+    });
+    mouse.current.moved = false;
+  }
+
+  function initGalleryAnimations(imgStateArr, gallery, mouse, rect) {
+    gsap.ticker.add(() => {
+      if (mouse.current.moved) {
+        animateGalleryPosition(
+          imgStateArr[0].current.targets(),
+          -4,
+          mouse,
+          rect,
+        );
+      }
+    });
+  }
 
   useLayoutEffect(() => {
     let ctx = gsap.context(() => {
       const rect = galleryRef.current.getBoundingClientRect();
-      animationUtils.initGridAnimations(
-        imgStateArr,
-        galleryRef.current,
-        mouse,
-        rect,
-      );
+      initGalleryAnimations(imgStateArr, galleryRef.current, mouse, rect);
     }, galleryRef.current);
     return () => ctx.revert();
   }, []);
@@ -164,7 +170,7 @@ function App() {
         <div
           className="gallery section"
           ref={galleryRef}
-          onMouseMove={mouseMove}
+          onMouseMove={updateGalleryPosition}
         >
           {songs.map((song, index) => {
             return (

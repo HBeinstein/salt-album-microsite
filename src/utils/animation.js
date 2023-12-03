@@ -186,9 +186,7 @@ export class Animation {
     // Handle image hover animation
     elements.forEach((e, i) => {
       imgStateArr[i].current = this.gsap.to(e, {
-        duration: 0.15,
-        y: 4,
-        x: -4,
+        duration: 0.1,
         scale: 1.025,
         ease: "sine.in",
         paused: true,

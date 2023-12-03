@@ -78,17 +78,15 @@ function App() {
   const mouse = useRef({ x: 0, y: 0, moved: false });
 
   function updateGalleryPosition(e) {
-    const rect = galleryRef.current.getBoundingClientRect();
     mouse.current.moved = true;
-    mouse.x = e.clientX - rect.left;
-    mouse.y = e.clientY - rect.top;
+    mouse.x = e.clientX;
+    mouse.y = e.clientY;
   }
 
   function updateGalleryPositionOnLeave() {
     mouse.current.moved = true;
     mouse.x = 0;
     mouse.y = 0;
-    console.log("leaving");
   }
 
   function animateGalleryPosition(movement, mouse, rect) {
@@ -103,18 +101,18 @@ function App() {
     return () => ctx.revert();
   }
 
-  function initGalleryAnimations(imgStateArr, gallery, mouse, rect) {
+  function initGalleryAnimations(mouse, rect) {
     gsap.ticker.add(() => {
       if (mouse.current.moved) {
-        animateGalleryPosition(-4, mouse, rect);
+        animateGalleryPosition(-100, mouse, rect);
       }
     });
   }
 
   useLayoutEffect(() => {
     let ctx = gsap.context(() => {
-      const rect = galleryRef.current.getBoundingClientRect();
-      initGalleryAnimations(imgStateArr, galleryRef.current, mouse, rect);
+      const rect = { width: window.innerWidth, height: window.innerHeight };
+      initGalleryAnimations(mouse, rect);
     }, galleryRef.current);
     return () => ctx.revert();
   }, []);

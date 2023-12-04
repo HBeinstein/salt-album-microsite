@@ -75,26 +75,23 @@ function App() {
   }, []);
 
   // Gallery grid animation
-  const mouse = useRef({ x: 0, y: 0, moved: false });
+  const mouse = useRef({ x: 0, moved: false });
 
   function updateGalleryPosition(e) {
     mouse.current.moved = true;
     mouse.x = e.clientX;
-    mouse.y = e.clientY;
   }
 
-  function updateGalleryPositionOnLeave() {
-    mouse.current.moved = true;
-    mouse.x = 0;
-    mouse.y = 0;
-  }
+  // function updateGalleryPositionOnLeave() {
+  //   mouse.current.moved = true;
+  //   mouse.x = 0;
+  // }
 
-  function animateGalleryPosition(movement, mouse, rect) {
+  function animateGalleryPosition(movement, mouse, rect, className) {
     let ctx = gsap.context(() => {
-      gsap.to(".gallery__image", {
-        duration: 0.5,
+      gsap.to(className, {
+        duration: 0.25,
         x: ((mouse.x - rect.width / 2) / rect.width) * movement,
-        y: ((mouse.y - rect.height / 2) / rect.height) * movement,
       });
       mouse.current.moved = false;
     }, galleryRef.current);
@@ -104,7 +101,9 @@ function App() {
   function initGalleryAnimations(mouse, rect) {
     gsap.ticker.add(() => {
       if (mouse.current.moved) {
-        animateGalleryPosition(-100, mouse, rect);
+        animateGalleryPosition(-80, mouse, rect, ".gallery-image--fast");
+        animateGalleryPosition(-65, mouse, rect, ".gallery-image--medium");
+        animateGalleryPosition(-50, mouse, rect, ".gallery-image--slow");
       }
     });
   }
@@ -174,14 +173,14 @@ function App() {
           className="gallery section"
           ref={galleryRef}
           onMouseMove={updateGalleryPosition}
-          onMouseLeave={updateGalleryPositionOnLeave}
+          // onMouseLeave={updateGalleryPositionOnLeave}
         >
           {songs.map((song, index) => {
             return (
               <ImageContainer
                 key={song.name}
                 src={song.imageSrc}
-                className={`gallery__image gallery__image--${song.imageAspectRatio}`}
+                className={`gallery__image gallery-image--${song.animationSpeed} gallery__image--${song.imageAspectRatio}`}
                 height={100}
                 alt={song.imageAlt}
                 loading={"lazy"}

@@ -134,11 +134,11 @@ export class Animation {
         duration: 0.001,
         ease: "sine.in",
       })
-      .to(".inner-cursor__background", {
-        rotationY: "+=180",
-        duration: 0.5,
-        ease: "sine.in",
-      })
+      // .to(".inner-cursor__background", {
+      //   rotationY: "+=180",
+      //   duration: 0.5,
+      //   ease: "sine.in",
+      // })
       .to(".inner-cursor__text", {
         opacity: "1",
         duration: 0.15,

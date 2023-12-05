@@ -8,7 +8,7 @@
   width: 2200px;
   z-index: -50;
   .gallery__image-container {
-    line-height: .5;
+    line-height: 1;
 		opacity: 1;
     position: relative;
     width: fit-content;
@@ -31,10 +31,14 @@
 	:hover .gallery__play-btn {
 		opacity: 1;
 	}
+  .gallery__figure,
   .gallery__image {
     height: 100%;
     min-height: 0;
     min-width: 0;
+  }
+  .gallery__figure {
+    margin: 0;
   }
   .gallery__image-container:first-child {
     grid-column: 2 / auto;

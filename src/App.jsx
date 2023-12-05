@@ -82,11 +82,6 @@ function App() {
     mouse.x = e.clientX;
   }
 
-  // function updateGalleryPositionOnLeave() {
-  //   mouse.current.moved = true;
-  //   mouse.x = 0;
-  // }
-
   function animateGalleryPosition(movement, mouse, rect, className) {
     let ctx = gsap.context(() => {
       gsap.to(className, {
@@ -173,19 +168,20 @@ function App() {
           className="gallery section"
           ref={galleryRef}
           onMouseMove={updateGalleryPosition}
-          // onMouseLeave={updateGalleryPositionOnLeave}
         >
           {songs.map((song, index) => {
             return (
               <ImageContainer
                 key={song.name}
                 src={song.imageSrc}
-                className={`gallery__image gallery-image--${song.animationSpeed} gallery__image--${song.imageAspectRatio}`}
+                className={`gallery__image gallery__image--${song.imageAspectRatio}`}
                 height={100}
                 alt={song.imageAlt}
                 loading={"lazy"}
+                animationSpeed={`gallery-image--${song.animationSpeed}`}
                 dataSongName={song.name}
                 dataSongAudio={song.audioSrc}
+                titlePosition={song.titlePosition}
                 handleClick={handleClick}
                 isActive={
                   songMap.songs.find((s) => s.name === song.name).isActive

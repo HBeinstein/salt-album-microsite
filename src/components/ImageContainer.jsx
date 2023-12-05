@@ -11,7 +11,7 @@ export function ImageContainer(props) {
   return (
     <div
       id={formattedSongId}
-      className="gallery__image-container"
+      className={`gallery__image-container ${props.animationSpeed}`}
       onMouseEnter={props.onEnter}
       onMouseLeave={props.onLeave}
     >
@@ -27,21 +27,32 @@ export function ImageContainer(props) {
         {btnText}
       </button> */}
       <audio id={props.dataSongName} src={props.dataSongAudio}></audio>
-      <img
-        src={props.src}
-        className={props.className}
-        // height={`${props.height}%`}
-        width="auto"
-        alt={props.alt}
-        data-song={props.dataSongName}
-        loading={props.loading}
-        onClick={() => {
-          const container = document.getElementById(formattedSongId);
-          const songAudio = container.querySelector("audio");
-          props.handleClick(props.dataSongName, songAudio);
-        }}
-        data-isactive={props.isActive}
-      ></img>
+      <figure className="gallery__figure">
+        {props.titlePosition === "top" && (
+          <figcaption className="gallery__figcaption">
+            {props.dataSongName}
+          </figcaption>
+        )}
+        <img
+          src={props.src}
+          className={props.className}
+          width="auto"
+          alt={props.alt}
+          data-song={props.dataSongName}
+          loading={props.loading}
+          onClick={() => {
+            const container = document.getElementById(formattedSongId);
+            const songAudio = container.querySelector("audio");
+            props.handleClick(props.dataSongName, songAudio);
+          }}
+          data-isactive={props.isActive}
+        ></img>
+        {props.titlePosition === "bottom" && (
+          <figcaption className="gallery__figcaption">
+            {props.dataSongName}
+          </figcaption>
+        )}
+      </figure>
     </div>
   );
 }

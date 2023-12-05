@@ -18,6 +18,7 @@ export const songs = [
     imageAspectRatio: "3x4",
     audioSrc: coolCoolCool,
     animationSpeed: "fast",
+    titlePosition: "bottom",
   },
   {
     name: "Apocalypse",
@@ -26,6 +27,7 @@ export const songs = [
     imageAspectRatio: "3x2",
     audioSrc: apocalypse,
     animationSpeed: "slow",
+    titlePosition: "top",
   },
   {
     name: "How Sweet Love Is",
@@ -34,6 +36,7 @@ export const songs = [
     imageAspectRatio: "3x4",
     audioSrc: howSweetLoveIs,
     animationSpeed: "medium",
+    titlePosition: "bottom",
   },
   {
     name: "Plum Season",
@@ -42,6 +45,7 @@ export const songs = [
     imageAspectRatio: "3x2",
     audioSrc: plumSeason,
     animationSpeed: "fast",
+    titlePosition: "bottom",
   },
   {
     name: "Take Hold Of The Light",
@@ -50,6 +54,7 @@ export const songs = [
     imageAspectRatio: "1x1",
     audioSrc: takeHoldOfTheLight,
     animationSpeed: "medium",
+    titlePosition: "bottom",
   },
   {
     name: "Too Soon",
@@ -58,6 +63,7 @@ export const songs = [
     imageAspectRatio: "3x2",
     audioSrc: tooSoon,
     animationSpeed: "slow",
+    titlePosition: "bottom",
   },
   {
     name: "Vampira",
@@ -66,6 +72,7 @@ export const songs = [
     imageAspectRatio: "3x4",
     audioSrc: vampira,
     animationSpeed: "medium",
+    titlePosition: "top",
   },
   {
     name: "Young Blood",
@@ -74,5 +81,6 @@ export const songs = [
     imageAspectRatio: "3x4",
     audioSrc: youngBlood,
     animationSpeed: "fast",
+    titlePosition: "bottom",
   },
 ];
